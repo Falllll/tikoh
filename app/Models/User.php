@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -48,4 +49,9 @@ class User extends Authenticatable
 //            get: function() => "https://www.gravatar.com/avatar/" . md5(strtolower($this->email)) . "?s=100&r=g"
 //        );
 //    }
+
+    public function boards(): HasMany
+    {
+        return $this->hasMany(Board::class);
+    }
 }
