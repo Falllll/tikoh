@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::factory()->create(['email' => 'druc@pinsmile.com', 'password' => bcrypt('secret')]);
+        $user = User::factory()->create(['email' => 'faldi@gmail.com', 'password' => bcrypt('secret')]);
 
         $boards = Board::factory(10)->for($user)->create();
 

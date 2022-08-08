@@ -8,7 +8,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['created']);
 
-const inputNameRef = ref();
+const inputTitleRef = ref();
 const isShowingForm = ref(false);
 const form = useForm({
   title: '',
@@ -19,14 +19,14 @@ const form = useForm({
 async function showForm() {
   isShowingForm.value = true;
   await nextTick();
-  inputNameRef.value.focus();
+  inputTitleRef.value.focus();
 }
 
 function onSubmit() {
   form.post(route('cards.store'), {
     onSuccess: () => {
       form.reset();
-      inputNameRef.value.focus();
+      inputTitleRef.value.focus();
       emit('created');
     }
   });
@@ -39,7 +39,7 @@ function onSubmit() {
     @submit.prevent="onSubmit()"
   >
     <textarea
-      ref="inputNameRef"
+      ref="inputTitleRef"
       v-model="form.title"
       rows="3"
       @keydown.enter.prevent="onSubmit()"
