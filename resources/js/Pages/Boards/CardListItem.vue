@@ -1,27 +1,28 @@
 <script setup>
 import {PencilIcon} from "@heroicons/vue/solid";
-import {nextTick, ref} from "vue";
+import {computed, nextTick, ref} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
+import {store} from "@/store";
 
 const props = defineProps({
   card: Object
 });
 
 const inputTitleRef = ref();
-const isShowingForm = ref(false);
+const isShowingForm = computed(() => props.card.id === store.value.editingCardId);
 const form = useForm({
   title: props.card.title,
 });
 
 async function showForm() {
-  isShowingForm.value = true;
+  store.value.editingCardId = props.card.id;
   await nextTick();
   inputTitleRef.value.focus();
 }
 
 function onSubmit() {
   form.put(route('cards.update', {card: props.card.id}), {
-    onSuccess: () => isShowingForm.value = false
+    onSuccess: () => store.value.editingCardId = null
   });
 }
 </script>
@@ -32,7 +33,7 @@ function onSubmit() {
   >
     <form
       v-if="isShowingForm"
-      @keydown.esc="isShowingForm = false"
+      @keydown.esc="store.editingCardId = null"
       @submit.prevent="onSubmit()"
     >
     <textarea
@@ -53,7 +54,7 @@ function onSubmit() {
         <button
           class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 focus:outline-none"
           type="button"
-          @click="isShowingForm = false"
+          @click="store.editingCardId = null"
         >Cancel
         </button>
       </div>
